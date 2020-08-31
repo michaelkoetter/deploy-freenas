@@ -55,6 +55,7 @@ PROTOCOL = deploy.get('protocol','http://')
 PORT = deploy.get('port','80')
 FTP_ENABLED = deploy.getboolean('ftp_enabled',fallback=False)
 WEBDAV_ENABLED = deploy.getboolean('webdav_enabled',fallback=False)
+S3_ENABLED = deploy.getboolean('s3_enabled',fallback=False)
 now = datetime.now()
 cert = "letsencrypt-%s-%s-%s-%s" %(now.year, now.strftime('%m'), now.strftime('%d'), ''.join(c for c in now.strftime('%X') if
 c.isdigit()))
@@ -179,6 +180,23 @@ if WEBDAV_ENABLED:
     print ("Setting active WEBDAV certificate successful")
   else:
     print ("Error setting active WEBDAV certificate!")
+    print (r)
+    sys.exit(1)
+
+if S3_ENABLED:
+  # Set our cert as active for S3 plugin
+  r = session.put(
+    PROTOCOL + FREENAS_ADDRESS + ':' + PORT + '/api/v2.0/s3/',
+    verify=VERIFY,
+    data=json.dumps({
+      "certificate": cert_id,
+    }),
+  )
+
+  if r.status_code == 200:
+    print ("Setting active S3 certificate successful")
+  else:
+    print ("Error setting active S3 certificate!")
     print (r)
     sys.exit(1)
 

@@ -45,3 +45,5 @@ password = YourSuperSecurePassword#@#$*
 
 # set webdav_enabled to true if you have the WEBDAV service enabled on your FreeNAS. Default is false.
 # webdav_enabled = true
+# set s3_enabled to true if you have the S3 service enabled on your FreeNAS. Default is false.
+# s3_enabled = true
